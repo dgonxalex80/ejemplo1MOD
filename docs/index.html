@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> Ejemplo 1</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Modelos Estadísticos para la toma de decisiones</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><span style="color:#034a94">
+<strong>Ejemplo 1</strong></span></h1>
+<h3 class="subtitle"><span style="color:#034a94"> <strong>Unidad 3 -
+Modelo Lineal General</strong></span></h3>
+
+</div>
+
+
+<p><br/><br/></p>
+<div id="problema-credito" class="section level1">
+<h1><span style="color:#034a94"><strong>Problema:
+Credito</strong></span></h1>
+<p><br/> <br/></p>
+<center>
+<img src="img/credito.png" width="80%" style="display: block; margin: auto;" />
+<sub>Tomada de: pixabay.com </sub>
+</center>
+<p><br/> <br/></p>
+<p>En el mundo financiero, la gestión de créditos es una tarea
+fundamental para los bancos y las instituciones financieras. La
+capacidad de predecir con precisión si un cliente cumplirá o no con sus
+pagos es esencial para mantener la estabilidad y la rentabilidad de la
+institución. En este ejercicio, utilizaremos como variable dependiente
+la categoría “default”, donde 0 representa a los clientes que cumplen
+con sus pagos y 1 a aquellos que no lo hacen. Las variables
+independientes serán:</p>
+<ul>
+<li>antigüedad</li>
+<li>edad</li>
+<li>cuota mensual</li>
+<li>ingresos</li>
+</ul>
+<p>A través de este análisis, exploraremos cómo estas variables influyen
+en la probabilidad de incumplimiento de pago, y construiremos un modelo
+logit para ayudarnos a tomar decisiones financieras más informadas. Para
+ello se tomará la base de datos <code>creditos</code>, contenida en
+<code>paqueteMODELOS</code> .</p>
+<p><br/><br/></p>
+<p>Imniciaremos con el reconicimiento de los datos</p>
+<pre class="r"><code># remove.packages(&quot;paqueteMODELOS&quot;)
+# devtools::install_github(&quot;dgonxalex80/paqueteMODELOS&quot;)
+library(paqueteMODELOS)</code></pre>
+<pre><code>Loading required package: boot</code></pre>
+<pre><code>Loading required package: broom</code></pre>
+<pre><code>Loading required package: GGally</code></pre>
+<pre><code>Loading required package: ggplot2</code></pre>
+<pre><code>Registered S3 method overwritten by &#39;GGally&#39;:
+  method from   
+  +.gg   ggplot2</code></pre>
+<pre><code>Loading required package: gridExtra</code></pre>
+<pre><code>Loading required package: knitr</code></pre>
+<pre class="r"><code>data(creditos)</code></pre>
+<pre class="r"><code>head(creditos)</code></pre>
+<pre><code># A tibble: 6 × 5
+  default antiguedad  edad   cuota ingresos
+    &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+1       1      37.3   77.0 3020519  8155593
+2       1      37.3   73.8 1766552  6181263
+3       1      31.0   78.9 1673786  4328075
+4       1       9.73  51.5  668479  5290910
+5       1       8.44  39.0 1223559  5333818
+6       1       6.61  44.9 3517756  2710736</code></pre>
+<p><br/> <br/></p>
+<pre class="r"><code>dplyr::glimpse(creditos)</code></pre>
+<pre><code>Rows: 780
+Columns: 5
+$ default    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ antiguedad &lt;dbl&gt; 37.317808, 37.317808, 30.978082, 9.728767, 8.443836, 6.6054…
+$ edad       &lt;dbl&gt; 76.98356, 73.77534, 78.93699, 51.52877, 38.96986, 44.87945,…
+$ cuota      &lt;dbl&gt; 3020519, 1766552, 1673786, 668479, 1223559, 3517756, 130479…
+$ ingresos   &lt;dbl&gt; 8155593, 6181263, 4328075, 5290910, 5333818, 2710736, 31697…</code></pre>
+<p><br/> <br/></p>
+<pre class="r"><code>library(ggplot2)
+
+# Crear un dataframe con los datos
+data &lt;- as.data.frame(table(creditos$default))
+
+# Crear el gráfico de barras
+ggplot(data, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;#1C768F&quot;) +
+  geom_text(aes(label = Freq), vjust = -0.5) +  # Agregar etiquetas de frecuencia
+  labs(x = &quot;Categoría&quot;, y = &quot;Frecuencia&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><br/><br/></p>
+<pre class="r"><code># Etapa 3: División de datos
+set.seed(123)  # Fijar semilla para reproducibilidad
+split_ratio &lt;- 0.7  # Porcentaje de datos de entrenamiento
+n_sample &lt;- floor(split_ratio * nrow(creditos))
+train_creditos &lt;- creditos[sample(1:nrow(creditos), n_sample), ]
+test_creditos &lt;- creditos[-sample(1:nrow(creditos), n_sample), ]</code></pre>
+<p><br/><br/></p>
+<div id="estimación-de-modelo" class="section level2">
+<h2>Estimación de modelo</h2>
+<pre class="r"><code># Etapa 4: Modelado
+modelo1 &lt;- glm(default ~ antiguedad + edad + cuota + ingresos, data = train_creditos, family = &quot;binomial&quot;)
+
+summary(modelo1)</code></pre>
+<pre><code>
+Call:
+glm(formula = default ~ antiguedad + edad + cuota + ingresos, 
+    family = &quot;binomial&quot;, data = train_creditos)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.8155  -0.3841  -0.2641  -0.1474   3.3322  
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept) -2.555e+00  1.062e+00  -2.406  0.01611 * 
+antiguedad  -7.941e-02  3.162e-02  -2.511  0.01203 * 
+edad         1.338e-02  2.299e-02   0.582  0.56053   
+cuota        9.859e-07  3.163e-07   3.117  0.00183 **
+ingresos    -1.967e-07  1.262e-07  -1.559  0.11900   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 215.01  on 545  degrees of freedom
+Residual deviance: 194.36  on 541  degrees of freedom
+AIC: 204.36
+
+Number of Fisher Scoring iterations: 7</code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="selección-de-variables" class="section level2">
+<h2>Selección de variables</h2>
+<pre class="r"><code>modelo2 &lt;- step(modelo1, direction = &quot;backward&quot;)</code></pre>
+<pre><code>Start:  AIC=204.36
+default ~ antiguedad + edad + cuota + ingresos
+
+             Df Deviance    AIC
+- edad        1   194.69 202.69
+&lt;none&gt;            194.36 204.36
+- ingresos    1   197.14 205.14
+- antiguedad  1   200.87 208.87
+- cuota       1   204.19 212.19
+
+Step:  AIC=202.69
+default ~ antiguedad + cuota + ingresos
+
+             Df Deviance    AIC
+&lt;none&gt;            194.69 202.69
+- ingresos    1   197.27 203.27
+- antiguedad  1   203.37 209.37
+- cuota       1   204.29 210.29</code></pre>
+<pre class="r"><code>summary(modelo2)</code></pre>
+<pre><code>
+Call:
+glm(formula = default ~ antiguedad + cuota + ingresos, family = &quot;binomial&quot;, 
+    data = train_creditos)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.7888  -0.3846  -0.2621  -0.1506   3.3180  
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -2.014e+00  4.863e-01  -4.141 3.46e-05 ***
+antiguedad  -6.847e-02  2.562e-02  -2.673  0.00753 ** 
+cuota        9.717e-07  3.154e-07   3.081  0.00206 ** 
+ingresos    -1.890e-07  1.260e-07  -1.500  0.13363    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 215.01  on 545  degrees of freedom
+Residual deviance: 194.69  on 542  degrees of freedom
+AIC: 202.69
+
+Number of Fisher Scoring iterations: 7</code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="estimación-del-modelo-con-variables-seleccionadas"
+class="section level2">
+<h2>Estimación del modelo con variables seleccionadas</h2>
+<pre class="r"><code>modelo3 &lt;- glm(formula = default ~ antiguedad + cuota, family = &quot;binomial&quot;, data = train_creditos)
+summary(modelo3)</code></pre>
+<pre><code>
+Call:
+glm(formula = default ~ antiguedad + cuota, family = &quot;binomial&quot;, 
+    data = train_creditos)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.7143  -0.3774  -0.2712  -0.1601   3.2025  
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -2.505e+00  3.729e-01  -6.719 1.83e-11 ***
+antiguedad  -8.163e-02  2.408e-02  -3.389 0.000701 ***
+cuota        7.341e-07  2.634e-07   2.787 0.005318 ** 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 215.01  on 545  degrees of freedom
+Residual deviance: 197.27  on 543  degrees of freedom
+AIC: 203.27
+
+Number of Fisher Scoring iterations: 7</code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="validación-del-modelo" class="section level2">
+<h2>Validación del modelo</h2>
+<pre class="r"><code>predicted_probs &lt;- predict(modelo3, newdata = test_creditos, type = &quot;response&quot;)
+predicted_classes &lt;- ifelse(predicted_probs &gt; 0.8, 1, 0)</code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="matriz-de-confusión" class="section level2">
+<h2>Matriz de confusión</h2>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>Loading required package: lattice</code></pre>
+<pre><code>
+Attaching package: &#39;lattice&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:boot&#39;:
+
+    melanoma</code></pre>
+<pre class="r"><code> # Calcular métricas de evaluación
+mc &lt;- confusionMatrix(data = factor(predicted_classes, levels = c(0, 1)),
+                        reference = factor(test_creditos$default, levels = c(0, 1)))
+mc  </code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction   0   1
+         0 224  10
+         1   0   0
+                                          
+               Accuracy : 0.9573          
+                 95% CI : (0.9228, 0.9793)
+    No Information Rate : 0.9573          
+    P-Value [Acc &gt; NIR] : 0.583060        
+                                          
+                  Kappa : 0               
+                                          
+ Mcnemar&#39;s Test P-Value : 0.004427        
+                                          
+            Sensitivity : 1.0000          
+            Specificity : 0.0000          
+         Pos Pred Value : 0.9573          
+         Neg Pred Value :    NaN          
+             Prevalence : 0.9573          
+         Detection Rate : 0.9573          
+   Detection Prevalence : 1.0000          
+      Balanced Accuracy : 0.5000          
+                                          
+       &#39;Positive&#39; Class : 0               
+                                          </code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="balanceo-de-la-muestra-de-estimación" class="section level2">
+<h2>Balanceo de la muestra de estimación</h2>
+<pre class="r"><code># Ejemplo de sobremuestreo utilizando la biblioteca &#39;ROSE&#39;
+library(ROSE)</code></pre>
+<pre><code>Loaded ROSE 0.0-4</code></pre>
+<pre class="r"><code>train_creditos_balanced &lt;- ROSE(default ~ ., data = train_creditos, seed = 1)$data
+
+modelo4 &lt;- glm(default ~ antiguedad + cuota, data = train_creditos_balanced, family = &quot;binomial&quot;)
+summary(modelo4)</code></pre>
+<pre><code>
+Call:
+glm(formula = default ~ antiguedad + cuota, family = &quot;binomial&quot;, 
+    data = train_creditos_balanced)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.849  -1.016  -0.582   1.040   2.173  
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  2.656e-01  1.658e-01   1.602    0.109    
+antiguedad  -6.268e-02  8.173e-03  -7.670 1.72e-14 ***
+cuota        5.000e-07  1.056e-07   4.735 2.19e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 754.54  on 545  degrees of freedom
+Residual deviance: 672.37  on 543  degrees of freedom
+AIC: 678.37
+
+Number of Fisher Scoring iterations: 4</code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="evaluacion-del-modelo" class="section level2">
+<h2>Evaluacion del modelo</h2>
+<pre class="r"><code># Etapa 5: Validación del modelo
+predicted_probs &lt;- predict(modelo4, newdata = test_creditos, type = &quot;response&quot;)
+predicted_classes &lt;- ifelse(predicted_probs &gt; 0.5, 1, 0)
+
+library(caret)
+ # Calcular métricas de evaluación
+mc &lt;- confusionMatrix(data = factor(predicted_classes, levels = c(0, 1)),
+                        reference = factor(test_creditos$default, levels = c(0, 1)))
+mc  </code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction   0   1
+         0 141   4
+         1  83   6
+                                          
+               Accuracy : 0.6282          
+                 95% CI : (0.5628, 0.6903)
+    No Information Rate : 0.9573          
+    P-Value [Acc &gt; NIR] : 1               
+                                          
+                  Kappa : 0.0481          
+                                          
+ Mcnemar&#39;s Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.62946         
+            Specificity : 0.60000         
+         Pos Pred Value : 0.97241         
+         Neg Pred Value : 0.06742         
+             Prevalence : 0.95726         
+         Detection Rate : 0.60256         
+   Detection Prevalence : 0.61966         
+      Balanced Accuracy : 0.61473         
+                                          
+       &#39;Positive&#39; Class : 0               
+                                          </code></pre>
+<p><br/> <br/></p>
+</div>
+<div id="estimación-del-modelo-con-toda-la-data" class="section level2">
+<h2>Estimación del modelo con toda la data</h2>
+<pre class="r"><code>modelo5 &lt;- glm(default ~ antiguedad + cuota, data = creditos, family = &quot;binomial&quot;)
+summary(modelo5)</code></pre>
+<pre><code>
+Call:
+glm(formula = default ~ antiguedad + cuota, family = &quot;binomial&quot;, 
+    data = creditos)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.1330  -0.3498  -0.3016  -0.2262   2.9253  
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -2.887e+00  3.054e-01  -9.454  &lt; 2e-16 ***
+antiguedad  -4.486e-02  1.682e-02  -2.667 0.007657 ** 
+cuota        6.590e-07  1.930e-07   3.415 0.000638 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 309.68  on 779  degrees of freedom
+Residual deviance: 295.61  on 777  degrees of freedom
+AIC: 301.61
+
+Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

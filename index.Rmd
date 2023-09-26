@@ -1,0 +1,200 @@
+---
+title: <span style="color:#034a94"> **Ejemplo 1**</span>
+subtitle: <span style="color:#034a94"> **Unidad 3 - Modelo Lineal General**</span>
+output:
+html_document:
+css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+library(summarytools)
+
+
+c1 ="#FF7F00"  # naranja - color primario 
+c2 ="#034A94"  # azul oscuro - color secundario
+c3 ="#0EB0C6"  # azul claro - color terciario
+c4 ="#686868"  # gris - color texto
+```
+
+
+<br/><br/>
+
+# <span style="color:#034a94">**Problema: Credito**</span>
+
+<br/> <br/>
+
+
+<center>
+```{r, echo=FALSE, out.width="80%", fig.align = "center"}
+knitr::include_graphics("img/credito.png")
+```
+<sub>Tomada de: pixabay.com </sub>
+</center>
+
+<br/> <br/>
+
+En el mundo financiero, la gestión de créditos es una tarea fundamental para los bancos y las instituciones financieras. La capacidad de predecir con precisión si un cliente cumplirá o no con sus pagos es esencial para mantener la estabilidad y la rentabilidad de la institución. En este ejercicio, utilizaremos como variable dependiente la categoría "default", donde 0 representa a los clientes que cumplen con sus pagos y 1 a aquellos que no lo hacen. Las variables independientes serán:
+
+* antigüedad 
+* edad 
+* cuota mensual
+* ingresos 
+
+A través de este análisis, exploraremos cómo estas variables influyen en la probabilidad de incumplimiento de pago, y construiremos un modelo logit para ayudarnos a tomar decisiones financieras más informadas. Para ello se tomará la base de datos `creditos`, contenida en `paqueteMODELOS` .
+
+
+
+<br/><br/>
+
+Imniciaremos con el reconicimiento de los datos
+
+```{r}
+
+# remove.packages("paqueteMODELOS")
+# devtools::install_github("dgonxalex80/paqueteMODELOS")
+library(paqueteMODELOS)
+data(creditos)
+```
+
+
+```{r}
+head(creditos)
+```
+
+<br/> <br/>
+
+```{r}
+dplyr::glimpse(creditos)
+```
+
+
+<br/> <br/>
+
+```{r}
+library(ggplot2)
+
+# Crear un dataframe con los datos
+data <- as.data.frame(table(creditos$default))
+
+# Crear el gráfico de barras
+ggplot(data, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity", fill = "#1C768F") +
+  geom_text(aes(label = Freq), vjust = -0.5) +  # Agregar etiquetas de frecuencia
+  labs(x = "Categoría", y = "Frecuencia") +
+  theme_minimal()
+
+
+```
+
+
+<br/><br/>
+
+```{r}
+# Etapa 3: División de datos
+set.seed(123)  # Fijar semilla para reproducibilidad
+split_ratio <- 0.7  # Porcentaje de datos de entrenamiento
+n_sample <- floor(split_ratio * nrow(creditos))
+train_creditos <- creditos[sample(1:nrow(creditos), n_sample), ]
+test_creditos <- creditos[-sample(1:nrow(creditos), n_sample), ]
+```
+
+<br/><br/>
+
+
+## Estimación de modelo
+
+```{r}
+
+# Etapa 4: Modelado
+modelo1 <- glm(default ~ antiguedad + edad + cuota + ingresos, data = train_creditos, family = "binomial")
+
+summary(modelo1)
+```
+
+<br/> <br/>
+
+## Selección de variables
+
+
+```{r}
+modelo2 <- step(modelo1, direction = "backward")
+summary(modelo2)
+```
+
+<br/> <br/>
+
+## Estimación del modelo con variables seleccionadas
+
+
+```{r}
+modelo3 <- glm(formula = default ~ antiguedad + cuota, family = "binomial", data = train_creditos)
+summary(modelo3)
+```
+
+<br/> <br/>
+
+## Validación del modelo
+
+```{r}
+predicted_probs <- predict(modelo3, newdata = test_creditos, type = "response")
+predicted_classes <- ifelse(predicted_probs > 0.8, 1, 0)
+
+```
+
+<br/> <br/>
+
+## Matriz de confusión
+
+```{r}
+library(caret)
+ # Calcular métricas de evaluación
+mc <- confusionMatrix(data = factor(predicted_classes, levels = c(0, 1)),
+                        reference = factor(test_creditos$default, levels = c(0, 1)))
+mc  
+```
+
+<br/> <br/>
+
+## Balanceo de la muestra de estimación
+
+```{r}
+# Ejemplo de sobremuestreo utilizando la biblioteca 'ROSE'
+library(ROSE)
+train_creditos_balanced <- ROSE(default ~ ., data = train_creditos, seed = 1)$data
+
+modelo4 <- glm(default ~ antiguedad + cuota, data = train_creditos_balanced, family = "binomial")
+summary(modelo4)
+
+
+```
+
+<br/> <br/>
+
+## Evaluacion del modelo
+
+```{r}
+# Etapa 5: Validación del modelo
+predicted_probs <- predict(modelo4, newdata = test_creditos, type = "response")
+predicted_classes <- ifelse(predicted_probs > 0.5, 1, 0)
+
+library(caret)
+ # Calcular métricas de evaluación
+mc <- confusionMatrix(data = factor(predicted_classes, levels = c(0, 1)),
+                        reference = factor(test_creditos$default, levels = c(0, 1)))
+mc  
+```
+
+<br/> <br/>
+
+## Estimación del modelo con toda la data
+
+```{r}
+
+modelo5 <- glm(default ~ antiguedad + cuota, data = creditos, family = "binomial")
+summary(modelo5)
+```
+
+
+
+
