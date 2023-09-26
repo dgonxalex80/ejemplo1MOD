@@ -294,7 +294,7 @@ logit para ayudarnos a tomar decisiones financieras más informadas. Para
 ello se tomará la base de datos <code>creditos</code>, contenida en
 <code>paqueteMODELOS</code> .</p>
 <p><br/><br/></p>
-<p>Imniciaremos con el reconicimiento de los datos</p>
+<p>Iniciaremos con el reconicimiento de los datos</p>
 <pre class="r"><code># remove.packages(&quot;paqueteMODELOS&quot;)
 # devtools::install_github(&quot;dgonxalex80/paqueteMODELOS&quot;)
 library(paqueteMODELOS)</code></pre>
@@ -341,6 +341,11 @@ ggplot(data, aes(x = Var1, y = Freq)) +
   theme_minimal()</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p><br/><br/></p>
+<div
+id="selección-de-la-muestra-de-estimación-y-de-la-muestra-de-evaluación"
+class="section level2">
+<h2>Selección de la muestra de estimación y de la muestra de
+evaluación</h2>
 <pre class="r"><code># Etapa 3: División de datos
 set.seed(123)  # Fijar semilla para reproducibilidad
 split_ratio &lt;- 0.7  # Porcentaje de datos de entrenamiento
@@ -348,6 +353,7 @@ n_sample &lt;- floor(split_ratio * nrow(creditos))
 train_creditos &lt;- creditos[sample(1:nrow(creditos), n_sample), ]
 test_creditos &lt;- creditos[-sample(1:nrow(creditos), n_sample), ]</code></pre>
 <p><br/><br/></p>
+</div>
 <div id="estimación-de-modelo" class="section level2">
 <h2>Estimación de modelo</h2>
 <pre class="r"><code># Etapa 4: Modelado

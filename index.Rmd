@@ -47,7 +47,7 @@ A través de este análisis, exploraremos cómo estas variables influyen en la p
 
 <br/><br/>
 
-Imniciaremos con el reconicimiento de los datos
+Iniciaremos con el reconicimiento de los datos
 
 ```{r}
 
@@ -89,6 +89,8 @@ ggplot(data, aes(x = Var1, y = Freq)) +
 
 
 <br/><br/>
+
+## Selección de la muestra de estimación y de la muestra de evaluación
 
 ```{r}
 # Etapa 3: División de datos
